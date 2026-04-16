@@ -564,63 +564,76 @@ document.addEventListener('DOMContentLoaded', function(){
   function drawSaveDate(){
     const canvas = el('std-canvas'); if(!canvas) return;
     const ctx = canvas.getContext('2d');
-    const W=400, H=220;
-    // Background
+    const W=400, H=240;
+    canvas.width=W; canvas.height=H;
+
+    // Background gradient
     const bg = ctx.createLinearGradient(0,0,W,H);
-    bg.addColorStop(0,'#1a0404'); bg.addColorStop(0.5,'#0e0202'); bg.addColorStop(1,'#1a0404');
+    bg.addColorStop(0,'#1e0404'); bg.addColorStop(0.5,'#0e0202'); bg.addColorStop(1,'#1e0404');
     ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
-    // Gold border
-    ctx.strokeStyle='rgba(201,168,76,0.6)'; ctx.lineWidth=2;
-    ctx.strokeRect(8,8,W-16,H-16);
-    ctx.strokeStyle='rgba(201,168,76,0.2)'; ctx.lineWidth=1;
-    ctx.strokeRect(14,14,W-28,H-28);
-    // Rose decorations
-    ctx.font='22px serif';
-    ctx.fillText('🌹',14,36); ctx.fillText('🌹',W-38,36);
-    ctx.fillText('🌸',14,H-8); ctx.fillText('🌸',W-38,H-8);
-    // Save the Date label
-    ctx.fillStyle='rgba(201,168,76,0.75)';
-    ctx.font='bold 10px Arial,sans-serif';
+
+    // Outer gold border
+    ctx.strokeStyle='rgba(201,168,76,0.7)'; ctx.lineWidth=2;
+    ctx.strokeRect(6,6,W-12,H-12);
+    // Inner border
+    ctx.strokeStyle='rgba(201,168,76,0.25)'; ctx.lineWidth=1;
+    ctx.strokeRect(12,12,W-24,H-24);
+
+    // Corner roses
+    ctx.font='20px serif';
+    ctx.fillText('🌹',14,32); ctx.fillText('🌹',W-36,32);
+    ctx.fillText('🌸',14,H-6); ctx.fillText('🌸',W-36,H-6);
+
+    // SAVE THE DATE label
     ctx.textAlign='center';
-    ctx.letterSpacing='3px';
-    ctx.fillText('✦  SAVE THE DATE  ✦', W/2, 48);
-    // Nikhil name — left side
+    ctx.fillStyle='rgba(201,168,76,0.8)';
+    ctx.font='bold 10px Arial';
+    ctx.fillText('✦   S A V E   T H E   D A T E   ✦', W/2, 44);
+
+    // Top divider
+    ctx.strokeStyle='rgba(201,168,76,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(50,52); ctx.lineTo(W-50,52); ctx.stroke();
+
+    // NIKHIL — line 1
     ctx.fillStyle='#ffffff';
-    ctx.font='italic 38px Georgia,serif';
-    ctx.textAlign='right';
-    ctx.fillText('Nikhil', W/2 - 18, 100);
-    // Ampersand — center
+    ctx.font='italic bold 40px Georgia,serif';
+    ctx.textAlign='center';
+    ctx.fillText('Nikhil', W/2, 95);
+
+    // & — line 2
     ctx.fillStyle='#C9A84C';
-    ctx.font='italic 28px Georgia,serif';
-    ctx.textAlign='center';
-    ctx.fillText('&', W/2, 97);
-    // Prachi name — right side
+    ctx.font='italic 22px Georgia,serif';
+    ctx.fillText('&', W/2, 118);
+
+    // PRACHI — line 3
     ctx.fillStyle='#ffffff';
-    ctx.font='italic 38px Georgia,serif';
-    ctx.textAlign='left';
-    ctx.fillText('Prachi', W/2 + 18, 100);
-    // Divider line
-    ctx.strokeStyle='rgba(201,168,76,0.4)'; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(60,112); ctx.lineTo(W-60,112); ctx.stroke();
+    ctx.font='italic bold 40px Georgia,serif';
+    ctx.fillText('Prachi', W/2, 158);
+
+    // Bottom divider
+    ctx.strokeStyle='rgba(201,168,76,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(50,168); ctx.lineTo(W-50,168); ctx.stroke();
+
     // Date
     ctx.fillStyle='#C9A84C';
-    ctx.font='bold 15px Arial,sans-serif';
-    ctx.textAlign='center';
-    ctx.fillText('10  ·  MAY  ·  2026', W/2, 135);
-    // Venue — two lines
-    ctx.fillStyle='rgba(237,224,204,0.65)';
-    ctx.font='11px Arial,sans-serif';
-    ctx.fillText('Mata Amritanandamayi Math', W/2, 158);
-    ctx.fillText('Nigdi, Pune — Maharashtra', W/2, 174);
-    // Bottom tagline
-    ctx.fillStyle='rgba(201,168,76,0.45)';
-    ctx.font='10px Arial,sans-serif';
-    ctx.fillText('Together Forever  💍', W/2, 200);
+    ctx.font='bold 14px Arial';
+    ctx.fillText('10  ·  MAY  ·  2026', W/2, 188);
+
+    // Venue line 1
+    ctx.fillStyle='rgba(237,224,204,0.6)';
+    ctx.font='11px Arial';
+    ctx.fillText('Mata Amritanandamayi Math, Nigdi, Pune', W/2, 207);
+
+    // Tagline
+    ctx.fillStyle='rgba(201,168,76,0.4)';
+    ctx.font='10px Arial';
+    ctx.fillText('Together Forever  💍', W/2, 228);
+
     // Update WhatsApp share link
     const waBtn = el('std-wa-btn');
     if(waBtn){
-      const msg = encodeURIComponent("Save the Date! 💍\nNikhil & Prachi are getting married!\n📅 10 May 2026\n📍 Mata Amritanandamayi Math, Nigdi, Pune\n\nOpen invitation → "+window.location.href);
-      waBtn.href = 'https://wa.me/?text='+msg;
+      const msg=encodeURIComponent("Save the Date! 💍\nNikhil & Prachi are getting married!\n📅 10 May 2026\n📍 Mata Amritanandamayi Math, Nigdi, Pune\n\nOpen invitation → "+window.location.href);
+      waBtn.href='https://wa.me/?text='+msg;
     }
   }
   window.downloadSaveDate = function(){
