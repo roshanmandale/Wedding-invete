@@ -181,6 +181,7 @@
         <a href="#s-gallery" onclick="closeNav()"><span class="np-num">07</span><span>Gallery</span></a>
         <a href="#s-rsvp" onclick="closeNav()"><span class="np-num">08</span><span>RSVP</span></a>
         <a href="#s-wishes" onclick="closeNav()"><span class="np-num">09</span><span>Wishes</span></a>
+        <a href="#s-quiz" onclick="closeNav()"><span class="np-num">10</span><span>Quiz 🎯</span></a>
       </nav>
       <div class="np-footer">
         <p>10 · 05 · 2026 &nbsp;·&nbsp; Sweta Lawn, Pune</p>
@@ -385,26 +386,60 @@
     <p class="dc-note reveal-child">We would be grateful if you dressed in the spirit of the occasion.</p>
   </section>
 
-  <!-- STORY -->
+  <!-- STORY — 3 Real Marathi Stories -->
   <section id="s-story" class="s story-s reveal">
     <div class="sf-l"></div>
-    <div class="s-label">Our Journey</div>
+    <div class="s-label">❤️ आमची प्रेमकहाणी</div>
     <h2 class="s-title">Our Story</h2>
-    <div class="story-tl">
-      <div class="tl-item reveal-child" style="--i:0">
-        <div class="tl-dot"><span>💫</span></div>
-        <div class="tl-card"><span class="tl-yr">2021</span><h3>Our Journey Begins</h3><p>Built a relationship filled with shared memories, laughter, and beautiful dreams together.</p></div>
+    <p class="story-intro reveal-child">Three moments that changed everything — told in their own words.</p>
+    <div class="story-cards">
+      <div class="story-card reveal-child" style="--i:0">
+        <div class="sc-header">
+          <div class="sc-num">01</div>
+          <div class="sc-meta">
+            <span class="sc-tag">College Days</span>
+            <h3 class="sc-title">आमची EDC प्रॅक्टिकल स्टोरी</h3>
+          </div>
+        </div>
+        <div class="sc-preview"><p>त्या दिवशी EDC चा प्रॅक्टिकल एक्झाम होता… मी अजिबात तयार नव्हतो 😅 आणि नशिबाने प्राची माझ्या ग्रुपमध्ये आली…</p></div>
+        <button class="sc-read-btn" onclick="openStory(0)"><span>पूर्ण स्टोरी वाचा</span><span class="sc-arrow">→</span></button>
       </div>
-      <div class="tl-item reveal-child" style="--i:1">
-        <div class="tl-dot"><span>💌</span></div>
-        <div class="tl-card"><span class="tl-yr">2023</span><h3>The Proposal</h3><p>Nikhil proposed and Prachi said yes — the beginning of their forever together.</p></div>
+      <div class="story-card reveal-child" style="--i:1">
+        <div class="sc-header">
+          <div class="sc-num">02</div>
+          <div class="sc-meta">
+            <span class="sc-tag">First Trip Together</span>
+            <h3 class="sc-title">चिचाटी ट्रिप आणि 5:45 ची ट्विस्ट</h3>
+          </div>
+        </div>
+        <div class="sc-preview"><p>मी प्राचीला चिचाटीला घेऊन गेलो… उन्हाळ्यात! जिथे पाणी असायला हवं होतं तिथे फक्त दगड आणि कडक ऊन… 😄</p></div>
+        <button class="sc-read-btn" onclick="openStory(1)"><span>पूर्ण स्टोरी वाचा</span><span class="sc-arrow">→</span></button>
       </div>
-      <div class="tl-item reveal-child" style="--i:2">
-        <div class="tl-dot"><span>💍</span></div>
-        <div class="tl-card"><span class="tl-yr">2026</span><h3>Forever Begins</h3><p>Join us on 10 May 2026 as we celebrate our love and begin our forever.</p></div>
+      <div class="story-card reveal-child" style="--i:2">
+        <div class="sc-header">
+          <div class="sc-num">03</div>
+          <div class="sc-meta">
+            <span class="sc-tag">Goa Trip</span>
+            <h3 class="sc-title">गोवा ट्रिप… आणि प्रेमाची सुरुवात</h3>
+          </div>
+        </div>
+        <div class="sc-preview"><p>कोरोनानंतरचं ते वर्ष… मित्रांनी गोवा ट्रिपचा प्लॅन केला… सुरुवातीला मी नाही म्हणालो होतो… पण नंतर कळलं — प्राची पण येणार आहे 😏</p></div>
+        <button class="sc-read-btn" onclick="openStory(2)"><span>पूर्ण स्टोरी वाचा</span><span class="sc-arrow">→</span></button>
       </div>
     </div>
   </section>
+
+  <!-- STORY FULL READ MODAL -->
+  <div id="story-modal" class="story-modal hidden">
+    <div class="sm-bg" onclick="closeStory()"></div>
+    <div class="sm-card">
+      <button class="sm-close" onclick="closeStory()">✕</button>
+      <div class="sm-emoji" id="sm-emoji"></div>
+      <span class="sm-tag" id="sm-tag"></span>
+      <h2 class="sm-title" id="sm-title"></h2>
+      <div class="sm-body" id="sm-body"></div>
+    </div>
+  </div>
 
 <!-- GALLERY -->
   <section id="s-gallery" class="s gallery-s reveal">
@@ -501,6 +536,31 @@
     </div>
   </section>
 
+  <!-- QUIZ SECTION -->
+  <section id="s-quiz" class="s quiz-s reveal">
+    <div class="sf-r"></div>
+    <div class="s-label">Fun &amp; Games</div>
+    <h2 class="s-title">Wedding Quiz</h2>
+    <p class="quiz-sub reveal-child">How well do you know Nikhil &amp; Prachi? 🎯</p>
+    <div id="quiz-wrap" class="quiz-wrap reveal-child">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-progress"></div></div>
+      <p class="quiz-q-num" id="quiz-qnum">Question 1 of 5</p>
+      <div class="quiz-card">
+        <p class="quiz-question" id="quiz-question"></p>
+        <div class="quiz-options" id="quiz-options"></div>
+      </div>
+    </div>
+    <div id="quiz-result" class="quiz-result hidden">
+      <div class="qr-icon" id="qr-icon"></div>
+      <h3 class="qr-score" id="qr-score"></h3>
+      <p class="qr-msg" id="qr-msg"></p>
+      <button class="btn-p" onclick="restartQuiz()" style="margin-top:20px">Play Again 🔄</button>
+    </div>
+  </section>
+
+  <!-- CONFETTI CANVAS -->
+  <canvas id="confetti-canvas" style="position:fixed;inset:0;pointer-events:none;z-index:9000;display:none;"></canvas>
+
   <!-- FOOTER -->
   <footer class="footer reveal">
     <div class="ft-rose-tl"></div><div class="ft-rose-br"></div>
@@ -510,8 +570,9 @@
       <div class="ft-rule"><span></span><span>◆</span><span></span></div>
       <p class="ft-msg">Thank you for being part of our special day.<br/>With love &amp; gratitude 🙏</p>
       <div class="ft-acts">
-        <button class="ft-btn" onclick="doShare()">Share Invite</button>
-        <a class="ft-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikhil+%26+Prachi+Wedding&dates=20260510T110000/20260510T235900&location=Sweta+Lawn,+Nigdi,+Pune" target="_blank">Add to Calendar</a>
+        <a class="ft-btn ft-btn-wa" id="wa-share-btn" href="#" target="_blank"><span>💬</span> WhatsApp</a>
+        <button class="ft-btn" onclick="doShare()"><span>📤</span> Share</button>
+        <a class="ft-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Nikhil+%26+Prachi+Wedding&dates=20260510T110000/20260510T235900&location=Sweta+Lawn,+Nigdi,+Pune" target="_blank"><span>📅</span> Calendar</a>
       </div>
       <p class="ft-credit">Made with ❤️ for Nikhil &amp; Prachi · 2026</p>
       <p class="ft-dev">made by roshan mandale</p>

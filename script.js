@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', function(){
   window.doRSVP = function(e){
     e.preventDefault();
     safe(()=>{ el('rf').classList.add('hidden'); el('rsvp-ok').classList.remove('hidden'); });
+    triggerConfetti();
   };
 
   // ── WISHES ──
@@ -275,6 +276,189 @@ document.addEventListener('DOMContentLoaded', function(){
     if(navigator.share) navigator.share(d);
     else navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copied!')).catch(()=>{});
   };
+  // WhatsApp with actual URL
+  const waBtn=el('wa-share-btn');
+  if(waBtn){ const msg=encodeURIComponent("You're invited to Nikhil & Prachi's Wedding! 💍\n📅 10 May 2026 | Sweta Lawn, Nigdi, Pune\n\nOpen invitation → "+window.location.href); waBtn.href='https://wa.me/?text='+msg; }
+
+  // ── STORIES ──
+  const STORIES=[
+    {emoji:'💥',tag:'College Days',title:'आमची EDC प्रॅक्टिकल स्टोरी',body:`खूप वर्षांपूर्वीची गोष्ट आहे… कॉलेजचे दिवस… आणि त्या दिवसांची एक खास आठवण 💫
+
+त्या दिवशी आमचा EDC (Electronic Devices and Communication) चा प्रॅक्टिकल एक्झाम होता. खरं सांगायचं तर… मी अजिबात तयार नव्हतो 😅 डोक्यात काहीच नव्हतं… आणि थोडा टेन्शनमध्येही होतो.
+
+सरांनी ४-५ जणांचे ग्रुप बनवले… आणि नशिबाने प्राची माझ्या ग्रुपमध्ये आली.
+
+त्या क्षणी माझ्या मित्रांनी कानात सांगितलं,
+"अरे, प्राची खूप ब्रिलियंट आहे… स्टडीमध्ये पण टॉप… आणि प्रॅक्टिकलमध्ये तर एकदम प्रो!"
+
+बस! माझ्या चेहऱ्यावर स्माईल आली 😎
+मनात विचार आला — "झालं! आता आपला प्रॅक्टिकल तर मस्त जाणार!"
+
+प्रॅक्टिकल सुरू झाला… आणि प्राची पूर्ण कॉन्फिडन्सने लीड घेत होती. ती एकेक वायर जोडत होती, सर्किट सेट करत होती… आणि मी बाजूला उभा राहून तिच्याकडे इम्प्रेस होऊन बघत होतो 😄
+
+पण अचानक…
+ती एक वायर जोडते… आणि धाडकन! 💥
+किटमधून स्पार्क आला… धूर निघायला लागला… सगळे एकदम घाबरले!
+
+क्षणभर सगळे शॉकमध्ये… आणि मी? 😆
+मी तर अजूनच इम्प्रेस झालो!
+
+त्या सीननंतर मी लगेच माझा फोन काढला… आणि आईला कॉल केला 😜
+आणि म्हटलं — "आई… बहु मिळाली!" 😂❤️
+
+तो दिवस आजही आठवला की हसू येतं…
+कारण त्या एका "स्पार्क"मध्येच आमच्या स्टोरीची सुरुवात झाली होती ✨`},
+    {emoji:'🌄',tag:'First Trip Together',title:'चिचाटी ट्रिप आणि 5:45 ची ट्विस्ट',body:`तो दिवस अजूनही ताजा आहे…
+
+मी आणि माझे मित्र सगळे मिळून अमरावतीजवळच्या प्रसिद्ध चिचाटीला जायचं ठरवलं — धबधबा, निसर्ग आणि मजा 💫
+
+पण खरी मजा कुठे झाली माहिती आहे? 😄
+मी प्राचीला चिचाटीला घेऊन गेलो… थेट उन्हाळ्यात! 🌞
+
+जिथे पाणी असायला हवं होतं… तिथे फक्त दगड, कडक ऊन आणि कोरडं वातावरण!
+पण तरीही… त्या सगळ्या "सुक्या" वातावरणातही…
+आमची company मात्र एकदम फुल ऑन enjoyable होती ❤️
+
+परत येताना…
+प्राची माझ्या बाईकवर बसली होती… संध्याकाळचे ५ वाजले होते 🌅
+
+मी थोडा हळू चालवत होतो… आणि तिला विचारलं,
+"आपण हळू गेलो तर काही problem नाही ना?"
+ती म्हणाली, "हो, काही problem नाही."
+
+थोड्यावेळाने ती म्हणाली —
+"मला काहीतरी सांगायचं आहे…"
+
+बस! 😳 माझं heart beat एकदम वाढलं…
+मनात हजार विचार सुरू — "काय सांगणार आहे? काही special आहे का?" ❤️🔥
+
+आणि मग तो "moment" आला…
+ती म्हणाली — "माझी last bus 5:45 ची आहे…" 😶
+
+आणि माझं काय झालं? 😵
+ज्याचं स्वप्न बघत होतो ते सगळं एका सेकंदात "फुसss!" 😂
+
+मग काय… मी लगेच bike ची speed वाढवली 🚀
+आणि ३० मिनिटांत ४० km cover करून bus stop ला पोचलो!
+
+इतकं effort घेतलं… आणि ट्विस्ट बघा —
+बसच ३० मिनिटांनी late होती! 🤣🤣
+
+मग आम्ही तिथेच थांबलो… थोडा वेळ अजून एकत्र घालवला… गप्पा मारल्या… हसलो… 💛
+त्या दिवसाची आठवण मात्र आजही माझ्या मनात fresh आहे ❤️`},
+    {emoji:'🌴',tag:'Goa Trip',title:'गोवा ट्रिप… आणि प्रेमाची सुरुवात',body:`कोरोनानंतरचं ते वर्ष…
+सगळे पुन्हा normal life मध्ये येत होते… आणि आमच्या मित्रांनी एक मोठा प्लॅन केला —
+"गोवा ट्रिप!" 🌊🔥
+
+सुरुवातीला मी या ट्रिपसाठी नाही म्हणालो होतो…
+पण नंतर कळलं — प्राची पण येणार आहे… 😏
+
+बस! माझा decision लगेच बदलला 😂
+मी लगेच booking केलं… आणि ट्रिपसाठी तयार झालो ❤️
+
+ट्रेन मात्र… ६ तास late! 😵
+पण तिच्यासोबत वेळ कसा गेला ते कळलंच नाही…
+
+गोव्यात एक मजेशीर moment… 😄
+आम्ही दोघं एका shop मध्ये गेलो…
+तिथे एक married couple होतं…
+बायको आमच्याकडे बघत होती…
+आणि अचानक तिच्या नवऱ्याला म्हणाली —
+"बघ किती cute आहेत हे दोघं… तू का नाही असा?" 😂😂
+
+नंतर beach वर एक photographer आला…
+तो म्हणाला — "Sir, couple photo खिचाईये…"
+मी म्हणालो, "नाही…"
+मग तो प्राचीला म्हणाला — "Madam, photo खिचाईये…"
+तीही म्हणाली, "नाही…"
+आणि त्यावर तो म्हणाला —
+"Madam ने नाही बोल दिया तो नहीं…" 😂😂
+
+त्या Goa trip मध्ये…
+काही official नव्हतं… काही बोललंही नव्हतं…
+पण त्या सगळ्या moments मध्ये…
+प्रेम हळूहळू सुरू झालं होतं… ❤️✨`}
+  ];
+  window.openStory=function(i){
+    const s=STORIES[i]; if(!s)return;
+    const m=el('story-modal'); if(!m)return;
+    el('sm-emoji').textContent=s.emoji; el('sm-tag').textContent=s.tag;
+    el('sm-title').textContent=s.title; el('sm-body').textContent=s.body;
+    m.classList.remove('hidden'); m.style.display='flex';
+    document.body.style.overflow='hidden';
+    setTimeout(()=>{ const c=m.querySelector('.sm-card'); if(c) c.scrollTop=0; },50);
+  };
+  window.closeStory=function(){
+    const m=el('story-modal'); if(!m)return;
+    m.classList.add('hidden'); m.style.display='none';
+    document.body.style.overflow='';
+  };
+
+  // ── WEDDING QUIZ ──
+  const QUIZ=[
+    {q:'Where did Nikhil and Prachi first meet?',opts:['College EDC Lab','Coffee Shop','Friend\'s Party','Online'],ans:0},
+    {q:'What caused the "spark" in their first meeting?',opts:['Love at first sight','Circuit short circuit 💥','A joke','Music'],ans:1},
+    {q:'Where did Nikhil take Prachi on their first trip?',opts:['Goa','Chichaati','Mumbai','Lonavala'],ans:1},
+    {q:'What was the famous "5:45" twist?',opts:['Train time','Her last bus time','Sunset time','Dinner reservation'],ans:1},
+    {q:'When is the wedding?',opts:['10 April 2026','10 May 2026','10 June 2026','10 July 2026'],ans:1}
+  ];
+  let qIdx=0,score=0;
+  function startQuiz(){
+    qIdx=0;score=0;
+    const qw=el('quiz-wrap'),qr=el('quiz-result');
+    if(qw) qw.classList.remove('hidden');
+    if(qr) qr.classList.add('hidden');
+    showQ();
+  }
+  function showQ(){
+    const q=QUIZ[qIdx];
+    const qn=el('quiz-qnum'),qq=el('quiz-question'),qo=el('quiz-options'),qp=el('quiz-progress');
+    if(qn) qn.textContent='Question '+(qIdx+1)+' of '+QUIZ.length;
+    if(qq) qq.textContent=q.q;
+    if(qp) qp.style.width=((qIdx+1)/QUIZ.length*100)+'%';
+    if(qo){
+      qo.innerHTML='';
+      q.opts.forEach((opt,i)=>{
+        const btn=document.createElement('button');
+        btn.className='quiz-opt'; btn.textContent=opt;
+        btn.onclick=()=>answerQ(i);
+        qo.appendChild(btn);
+      });
+    }
+  }
+  function answerQ(i){
+    const q=QUIZ[qIdx];
+    document.querySelectorAll('.quiz-opt').forEach((o,idx)=>{
+      o.classList.add('disabled');
+      if(idx===q.ans) o.classList.add('correct');
+      else if(idx===i) o.classList.add('wrong');
+    });
+    if(i===q.ans) score++;
+    setTimeout(()=>{ qIdx++; if(qIdx<QUIZ.length) showQ(); else showResult(); },1200);
+  }
+  function showResult(){
+    const qw=el('quiz-wrap'),res=el('quiz-result');
+    if(qw) qw.classList.add('hidden');
+    if(!res) return;
+    res.classList.remove('hidden');
+    const pct=Math.round(score/QUIZ.length*100);
+    if(pct===100){ el('qr-icon').textContent='🏆'; el('qr-score').textContent='Perfect Score!'; el('qr-msg').textContent='You know Nikhil & Prachi better than they know themselves! 😄'; }
+    else if(pct>=60){ el('qr-icon').textContent='🎉'; el('qr-score').textContent=score+' / '+QUIZ.length; el('qr-msg').textContent='Great job! You know them well! 👏'; }
+    else{ el('qr-icon').textContent='😅'; el('qr-score').textContent=score+' / '+QUIZ.length; el('qr-msg').textContent='Not bad! But you should spend more time with them! 😄'; }
+    triggerConfetti();
+  }
+  window.restartQuiz=startQuiz;
+  startQuiz();
+
+  // ── CONFETTI ──
+  function triggerConfetti(){
+    const cv=el('confetti-canvas'); if(!cv)return;
+    cv.style.display='block'; cv.width=window.innerWidth; cv.height=window.innerHeight;
+    const ctx=cv.getContext('2d');
+    const pieces=Array.from({length:80},()=>({x:Math.random()*cv.width,y:-20,vx:(Math.random()-.5)*3,vy:Math.random()*3+2,r:Math.random()*4+2,c:['#C9A84C','#E8C97A','#C41E3A','#8B1A2A'][Math.floor(Math.random()*4)],rot:Math.random()*360,rotV:Math.random()*10-5}));
+    let frame=0;
+    (function draw(){ctx.clearRect(0,0,cv.width,cv.height);pieces.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.rotV;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);ctx.restore();});frame++;if(frame<180)requestAnimationFrame(draw);else cv.style.display='none';})();
+  }
 
   // ── START ──
   initLoader();
