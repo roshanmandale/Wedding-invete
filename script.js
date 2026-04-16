@@ -497,17 +497,18 @@ document.addEventListener('DOMContentLoaded', function(){
     (function draw(){ctx.clearRect(0,0,cv.width,cv.height);pieces.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.rotV;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);ctx.restore();});frame++;if(frame<180)requestAnimationFrame(draw);else cv.style.display='none';})();
   }
 
-  // ── SECURITY — Token-based access control ──
-  // Valid tokens — add/remove as needed. Share links like: ?guest=Rahul&token=np2026
+  // ── SECURITY — Strict token required ──
+  // EVERY link must have ?token=  to open the site
+  // Share links: ?guest=Rahul&token=np2026
   const VALID_TOKENS = ['np2026','nikhilprachi','wedding2026','sweta2026','invite2026'];
   function checkSecurity(){
     try{
       const p = new URLSearchParams(window.location.search);
       const token = p.get('token');
-      // If no token param at all — allow (for localhost/testing)
-      if(!p.has('token')) return true;
-      // If token param exists, validate it
-      return VALID_TOKENS.includes(token);
+      // Localhost always allowed (for you to test/develop)
+      if(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1') return true;
+      // Must have a valid token
+      return token && VALID_TOKENS.includes(token.trim());
     }catch(e){ return true; }
   }
   function showSecurityLock(){
