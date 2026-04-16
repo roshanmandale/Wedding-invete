@@ -136,15 +136,27 @@ document.addEventListener('DOMContentLoaded', function(){
     tick(); setInterval(tick,1000);
   }
 
-  // ── CALENDAR TAB FILTER ──
+  // ── CALENDAR TOGGLE (Groom / Bride) ──
+  window.switchCal = function(side){
+    const cg=el('cal-groom'), cb=el('cal-bride');
+    const bg=el('cal-btn-groom'), bb=el('cal-btn-bride');
+    if(!cg||!cb) return;
+    const hideEl=side==='groom'?cb:cg;
+    const showEl=side==='groom'?cg:cb;
+    hideEl.classList.add('cal-exit');
+    setTimeout(()=>{
+      hideEl.classList.add('hidden'); hideEl.classList.remove('cal-exit');
+      showEl.classList.remove('hidden'); showEl.classList.add('cal-enter');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{ showEl.classList.remove('cal-enter'); }));
+    },300);
+    if(bg) bg.classList.toggle('active',side==='groom');
+    if(bb) bb.classList.toggle('active',side==='bride');
+  };
+
+  // ── CALENDAR TAB FILTER (legacy — keep for compatibility) ──
   window.switchCalTab = function(tab){
     document.querySelectorAll('.cal-tab').forEach(b=>b.classList.remove('active'));
     const activeBtn=el('cal-tab-'+tab); if(activeBtn) activeBtn.classList.add('active');
-    document.querySelectorAll('.cal-grid s.ev').forEach(s=>{
-      if(tab==='all') s.classList.remove('cal-hidden');
-      else if(tab==='groom') s.classList.toggle('cal-hidden',!s.dataset.groom);
-      else if(tab==='bride') s.classList.toggle('cal-hidden',!s.dataset.bride);
-    });
   };
 
   // ── SCROLL REVEAL ──
