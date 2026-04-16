@@ -1,0 +1,11 @@
+node_modules
+src
+public
+css
+js
+.vscode
+vite.config.js
+eslint.config.js
+README.md
+package.json
+package-lock.json
