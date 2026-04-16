@@ -8,6 +8,8 @@ body{font-family:'Poppins',sans-serif;background:var(--ink);color:var(--text);ov
 a{text-decoration:none;color:inherit}
 button{font-family:'Poppins',sans-serif;cursor:pointer;border:none;outline:none}
 .hidden{display:none!important}
+/* Override hidden for fixed-position screens so they can be shown with display:flex */
+#photo-reveal.hidden,#envelope.hidden,#main.hidden{display:none!important}
 ::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:2px}
 
 /* ── LOADER ── */

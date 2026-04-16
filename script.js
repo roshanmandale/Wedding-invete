@@ -69,15 +69,17 @@ function mkPetals(id,n){
     if(exited) return;
     exited=true;
     clearInterval(iv);
-    safe(()=>loader.classList.add('out'));
+    // Fade out loader
+    loader.style.transition='opacity 0.8s ease';
+    loader.style.opacity='0';
     setTimeout(()=>{
-      safe(()=>{ loader.style.display='none'; });
+      loader.style.display='none';
       showPhoto();
-    },900);
+    },850);
   }
 
-  setTimeout(exitLoader,2600);          // normal exit
-  setTimeout(exitLoader,5000);          // hard safety net
+  setTimeout(exitLoader,2600);   // normal exit
+  setTimeout(exitLoader,5000);   // hard safety net
 })();
 
 // ── STEP 2: INVITATION CARD ──
@@ -85,8 +87,14 @@ function showPhoto(){
   const screen=el('photo-reveal');
   if(!screen){ showMainDirect(); return; }
 
+  // Remove hidden FIRST so element has dimensions, THEN init canvas
+  screen.style.display='flex';
   screen.classList.remove('hidden');
-  safe(()=>mkCanvas('pc',60,['#C9A84C','#C41E3A','#8B1A2A','#E8C97A']));
+
+  // Wait one frame for layout to compute before canvas resize
+  requestAnimationFrame(()=>{
+    safe(()=>mkCanvas('pc',60,['#C9A84C','#C41E3A','#8B1A2A','#E8C97A']));
+  });
 
   const pp=el('pp');
   if(pp){
@@ -144,9 +152,9 @@ function showMain(){
 
 // Fallback: skip straight to main if any step element is missing
 function showMainDirect(){
-  safe(()=>{ el('loader').style.display='none'; });
-  safe(()=>{ el('photo-reveal').classList.add('hidden'); });
-  safe(()=>{ el('envelope').classList.add('hidden'); });
+  ['loader','photo-reveal','envelope'].forEach(id=>{
+    const e=el(id); if(e) e.style.display='none';
+  });
   showMain();
 }
 
