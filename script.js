@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', function(){
     if(!screen){ showMain(); return; }
     screen.style.display='flex'; screen.style.opacity='1'; screen.style.visibility='visible';
     screen.classList.remove('hidden');
+    // Show guest name on card immediately
+    initGuestName();
     requestAnimationFrame(()=>safe(()=>mkCanvas('pc',60,['#C9A84C','#C41E3A','#8B1A2A','#E8C97A'])));
     const pp=el('pp');
     if(pp){ const em=['🌹','🌸','🌺','🌷','✿']; for(let i=0;i<12;i++){const p=document.createElement('div');p.className='ep';p.textContent=em[Math.floor(Math.random()*em.length)];p.style.left=(Math.random()*100)+'%';p.style.fontSize=(Math.random()*.6+.5)+'rem';p.style.animationDuration=(Math.random()*6+6)+'s';p.style.animationDelay=(Math.random()*5)+'s';pp.appendChild(p);} }
@@ -96,10 +98,17 @@ document.addEventListener('DOMContentLoaded', function(){
       const name = decodeURIComponent(raw.trim())
         .replace(/\+/g,' ')
         .replace(/\b\w/g, c => c.toUpperCase());
-      const el_g = el('nav-guest');
-      if(el_g){
-        el_g.textContent = 'Welcome, ' + name;
-        el_g.classList.add('visible');
+
+      // Show in nav top-left
+      const navG = el('nav-guest');
+      if(navG){ navG.textContent='Welcome, '+name; navG.classList.add('visible'); }
+
+      // Show on invitation card
+      const cardWrap = el('inv-guest-wrap');
+      const cardName = el('inv-guest-name');
+      if(cardWrap && cardName){
+        cardName.textContent = name;
+        cardWrap.classList.remove('hidden');
       }
     }catch(e){}
   }
