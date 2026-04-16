@@ -438,3 +438,13 @@ button{font-family:'Poppins',sans-serif;cursor:pointer;border:none;outline:none}
   #fab-top-btn{right:calc(50% - 224px) !important}
   #music-fab{left:calc(50% - 224px) !important}
 }
+
+/* Guest name in nav */
+.nav-left{display:flex;flex-direction:column;gap:1px}
+.nav-guest{
+  font-family:'Great Vibes',cursive;
+  font-size:0.95rem;color:rgba(201,168,76,0.75);
+  line-height:1;letter-spacing:0.5px;
+  display:none;
+}
+.nav-guest.visible{display:block}

@@ -84,6 +84,24 @@ document.addEventListener('DOMContentLoaded', function(){
   function initMain(){
     safe(()=>mkCanvas('hc',60,['#C9A84C','#C41E3A','#8B1A2A']));
     initCountdown(); initReveal(); initNav(); initGallery();
+    initGuestName();
+  }
+
+  // ── GUEST NAME — reads ?guest=Name from URL ──
+  function initGuestName(){
+    try{
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get('guest');
+      if(!raw || !raw.trim()) return;
+      const name = decodeURIComponent(raw.trim())
+        .replace(/\+/g,' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+      const el_g = el('nav-guest');
+      if(el_g){
+        el_g.textContent = 'Welcome, ' + name;
+        el_g.classList.add('visible');
+      }
+    }catch(e){}
   }
 
   // ── COUNTDOWN ──
