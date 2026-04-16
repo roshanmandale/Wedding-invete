@@ -769,3 +769,79 @@ button{font-family:'Poppins',sans-serif;cursor:pointer;border:none;outline:none}
 .pwa-icon{font-size:2.5rem;margin-bottom:10px}
 .pwa-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--cream);font-weight:600;margin-bottom:6px}
 .pwa-sub{font-size:0.75rem;color:var(--dim);margin-bottom:16px}
+
+/* CALENDAR IMPROVEMENTS */
+.cal-subtitle{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--dim2);margin-top:4px}
+
+/* Calendar tabs */
+.cal-tabs{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+.cal-tab{padding:7px 16px;border-radius:20px;font-size:0.68rem;font-weight:500;background:transparent;color:var(--dim2);border:1px solid rgba(255,255,255,0.08);cursor:pointer;transition:all 0.25s;min-height:34px}
+.cal-tab.active{background:linear-gradient(135deg,var(--maroon),var(--rose));color:var(--gold);border-color:rgba(201,168,76,0.28)}
+.cal-tab:hover:not(.active){color:var(--dim);border-color:rgba(201,168,76,0.15)}
+
+/* Calendar event colors */
+.cal-groom{position:relative}
+.cal-bride{position:relative}
+.cal-both{position:relative}
+/* Groom events — orange/warm tones */
+.ev-gondhal{background:rgba(255,140,0,0.25);color:#FFB74D;border:1px solid rgba(255,140,0,0.45);box-shadow:0 0 8px rgba(255,140,0,0.15)}
+.ev-mehendi-g{background:rgba(76,175,80,0.22);color:#A5D6A7;border:1px solid rgba(76,175,80,0.4)}
+.ev-haldi-g{background:rgba(255,235,59,0.22);color:#FFF176;border:1px solid rgba(255,235,59,0.4)}
+.ev-travel{background:rgba(100,181,246,0.2);color:#90CAF9;border:1px solid rgba(100,181,246,0.35)}
+.ev-reception{background:rgba(230,74,25,0.22);color:#FFAB91;border:1px solid rgba(230,74,25,0.4)}
+.ev-pooja{background:rgba(255,215,0,0.2);color:#FFE082;border:1px solid rgba(255,215,0,0.35)}
+/* Bride events */
+.ev-mehndi-b{background:rgba(0,188,212,0.22);color:#80DEEA;border:1px solid rgba(0,188,212,0.4)}
+.ev-sangeet{background:rgba(156,39,176,0.25);color:#CE93D8;border:1px solid rgba(156,39,176,0.45)}
+/* Wedding — gold pulse */
+.ev-wedding{background:linear-gradient(135deg,rgba(107,15,26,0.7),rgba(139,26,42,0.7));color:var(--gold);border:1px solid rgba(201,168,76,0.55);box-shadow:0 0 16px rgba(201,168,76,0.3);animation:calPulse 2s ease-in-out infinite;font-weight:700}
+
+/* Hidden calendar dates */
+.cal-grid s.cal-hidden{opacity:0.15;pointer-events:none}
+
+/* Legend groups */
+.cal-leg-full{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.cal-leg-group{background:rgba(255,255,255,0.02);border:1px solid var(--bdr);border-radius:10px;padding:10px 12px}
+.cal-leg-heading{font-size:0.62rem;color:var(--gold);font-weight:600;letter-spacing:1px;margin-bottom:6px}
+.cal-leg-items{display:flex;flex-wrap:wrap;gap:8px}
+.cal-leg-items span{display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--dim)}
+.cal-dot{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ev-gondhal.cal-dot{background:rgba(255,140,0,0.8)}
+.ev-mehendi-g.cal-dot{background:rgba(76,175,80,0.8)}
+.ev-haldi-g.cal-dot{background:rgba(255,235,59,0.8)}
+.ev-travel.cal-dot{background:rgba(100,181,246,0.8)}
+.ev-reception.cal-dot{background:rgba(230,74,25,0.8)}
+.ev-mehndi-b.cal-dot{background:rgba(0,188,212,0.8)}
+.ev-sangeet.cal-dot{background:rgba(156,39,176,0.8)}
+.ev-wedding.cal-dot{background:var(--gold);animation:none}
+.ev-pooja.cal-dot{background:rgba(255,215,0,0.8)}
+
+/* IMPROVED ANIMATIONS */
+/* Countdown number flip */
+.cd-n{transition:transform 0.3s cubic-bezier(0.4,0,0.2,1),opacity 0.3s}
+.cd-n.flip{transform:translateY(-8px);opacity:0}
+
+/* Section reveal with stagger */
+.reveal-child{transition-delay:calc(var(--i,0)*0.08s)}
+
+/* Hero names shimmer */
+.hn-nikhil,.hn-prachi{
+  background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,0.7) 40%,#fff 60%,rgba(255,255,255,0.7) 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:textShimmer 4s linear infinite;
+}
+@keyframes textShimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+
+/* Card hover lift */
+.story-card,.ev-tl-card,.wc,.tl-card{
+  transition:transform 0.28s cubic-bezier(0.4,0,0.2,1),box-shadow 0.28s,border-color 0.28s;
+}
+
+/* Floating music button pulse when playing */
+#music-fab.playing{
+  animation:musicPulse 1.5s ease-in-out infinite;
+}
+@keyframes musicPulse{0%,100%{box-shadow:0 4px 16px rgba(0,0,0,0.5)}50%{box-shadow:0 4px 24px rgba(201,168,76,0.35)}}

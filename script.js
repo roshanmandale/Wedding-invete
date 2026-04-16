@@ -113,17 +113,39 @@ document.addEventListener('DOMContentLoaded', function(){
     }catch(e){}
   }
 
-  // ── COUNTDOWN ──
+  // ── COUNTDOWN with flip animation ──
   function initCountdown(){
     const target=new Date('2026-05-10T11:00:00+05:30').getTime();
+    const prev={d:'',h:'',m:'',s:''};
     function tick(){
       const diff=target-Date.now(); if(diff<=0)return;
-      const set=(id,v)=>{ const e=el(id); if(e) e.textContent=String(v).padStart(2,'0'); };
-      set('cd-d',Math.floor(diff/86400000)); set('cd-h',Math.floor((diff%86400000)/3600000));
-      set('cd-m',Math.floor((diff%3600000)/60000)); set('cd-s',Math.floor((diff%60000)/1000));
+      const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000);
+      const m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+      const set=(id,v,key)=>{
+        const e=el(id); if(!e)return;
+        const str=String(v).padStart(2,'0');
+        if(str!==prev[key]){
+          e.classList.add('flip');
+          setTimeout(()=>{ e.textContent=str; e.classList.remove('flip'); },150);
+          prev[key]=str;
+        }
+      };
+      set('cd-d',d,'d'); set('cd-h',h,'h'); set('cd-m',m,'m'); set('cd-s',s,'s');
+      set('hcd-d',d,'d'); set('hcd-h',h,'h'); set('hcd-m',m,'m'); set('hcd-s',s,'s');
     }
     tick(); setInterval(tick,1000);
   }
+
+  // ── CALENDAR TAB FILTER ──
+  window.switchCalTab = function(tab){
+    document.querySelectorAll('.cal-tab').forEach(b=>b.classList.remove('active'));
+    const activeBtn=el('cal-tab-'+tab); if(activeBtn) activeBtn.classList.add('active');
+    document.querySelectorAll('.cal-grid s.ev').forEach(s=>{
+      if(tab==='all') s.classList.remove('cal-hidden');
+      else if(tab==='groom') s.classList.toggle('cal-hidden',!s.dataset.groom);
+      else if(tab==='bride') s.classList.toggle('cal-hidden',!s.dataset.bride);
+    });
+  };
 
   // ── SCROLL REVEAL ──
   function initReveal(){
@@ -497,28 +519,6 @@ document.addEventListener('DOMContentLoaded', function(){
     (function draw(){ctx.clearRect(0,0,cv.width,cv.height);pieces.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.rotV;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.c;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);ctx.restore();});frame++;if(frame<180)requestAnimationFrame(draw);else cv.style.display='none';})();
   }
 
-  // ── SECURITY — Strict token required ──
-  // EVERY link must have ?token=  to open the site
-  // Share links: ?guest=Rahul&token=np2026
-  const VALID_TOKENS = ['np2026','nikhilprachi','wedding2026','sweta2026','invite2026'];
-  function checkSecurity(){
-    try{
-      const p = new URLSearchParams(window.location.search);
-      const token = p.get('token');
-      // Localhost always allowed (for you to test/develop)
-      if(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1') return true;
-      // Must have a valid token
-      return token && VALID_TOKENS.includes(token.trim());
-    }catch(e){ return true; }
-  }
-  function showSecurityLock(){
-    const lock = el('security-lock');
-    if(lock){
-      lock.style.display='flex';
-      safe(()=>mkCanvas('slc',40,['#C9A84C','#C41E3A']));
-    }
-  }
-
   // ── REMINDER NOTIFICATIONS ──
   window.setReminder = async function(daysBefore){
     const status = el('reminder-status');
@@ -659,18 +659,13 @@ document.addEventListener('DOMContentLoaded', function(){
     pwaPrompt=null;
   };
 
+
   // ── START ──
-  // Register service worker for PWA
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('/sw.js').catch(()=>{});
   }
-  // Security check first
-  if(!checkSecurity()){
-    showSecurityLock();
-  } else {
-    initLoader();
-    setTimeout(drawSaveDate, 500);
-  }
+  initLoader();
+  setTimeout(drawSaveDate, 500);
 
 });
 
