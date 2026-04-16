@@ -153,7 +153,7 @@
     <div class="hero-rose-tl"></div><div class="hero-rose-tr"></div>
     <div class="hero-rose-bl"></div><div class="hero-rose-br"></div>
     <div class="hero-body">
-      <p class="hero-tag anim-in" style="--d:.1s">You are cordially invited</p>
+      <p class="hero-tag anim-in" style="--d:.1s" id="welcomeText">You are cordially invited</p>
       <h1 class="hero-names">
         <span class="hn-nikhil anim-in" style="--d:.3s">Nikhil</span>
         <span class="hn-amp anim-in" style="--d:.5s">&amp;</span>
@@ -217,34 +217,80 @@
     </div>
   </section>
 
-  <!-- EVENTS -->
+  <!-- EVENTS — Premium Interactive Timeline -->
   <section id="s-events" class="s events-s reveal">
     <div class="sf-l"></div><div class="sf-r"></div>
-    <div class="s-label">Programme</div>
-    <h2 class="s-title">Timing</h2>
-    <div class="ev-cards">
-      <div class="ev-card reveal-child" style="--i:0">
-        <div class="ev-accent" style="background:linear-gradient(180deg,#4CAF50,#2E7D32)"></div>
-        <div class="ev-left"><span class="ev-emoji">🌿</span><span class="ev-day">08<br/>May</span></div>
-        <div class="ev-right"><h3>Mehndi Ceremony</h3><p class="ev-time">⏰ 4:00 PM onwards</p><p class="ev-place">📍 Sweta Lawn, Nigdi, Pune</p><span class="ev-tag">Yellow / Green</span></div>
+    <div class="s-label">The Big Day</div>
+    <h2 class="s-title-oe">Order <em>of</em> Events</h2>
+    <p class="oe-sub">Click any event to see venue, map &amp; outfit details</p>
+
+    <div class="oe-timeline">
+      <!-- LEFT items -->
+      <div class="oe-item oe-left reveal-child" style="--i:0" onclick="openEventModal('mehndi')">
+        <div class="oe-content">
+          <p class="oe-time">08 May · 4:00 PM</p>
+          <h3 class="oe-name">Mehndi Ceremony</h3>
+        </div>
+        <div class="oe-connector"><div class="oe-dot"></div></div>
+        <div class="oe-icon-wrap mehndi-bg"><span>🌿</span></div>
       </div>
-      <div class="ev-card reveal-child" style="--i:1">
-        <div class="ev-accent" style="background:linear-gradient(180deg,#9C27B0,#6A1B9A)"></div>
-        <div class="ev-left"><span class="ev-emoji">🎶</span><span class="ev-day">09<br/>May</span></div>
-        <div class="ev-right"><h3>Sangeet Night</h3><p class="ev-time">⏰ 7:00 PM onwards</p><p class="ev-place">📍 Sweta Lawn, Nigdi, Pune</p><span class="ev-tag">Cocktail / Festive</span></div>
+
+      <!-- RIGHT item -->
+      <div class="oe-item oe-right reveal-child" style="--i:1" onclick="openEventModal('sangeet')">
+        <div class="oe-icon-wrap sangeet-bg"><span>🎶</span></div>
+        <div class="oe-connector"><div class="oe-dot"></div></div>
+        <div class="oe-content">
+          <p class="oe-time">09 May · 7:00 PM</p>
+          <h3 class="oe-name">Sangeet Night</h3>
+        </div>
       </div>
-      <div class="ev-card ev-featured reveal-child" style="--i:2">
-        <div class="ev-accent" style="background:linear-gradient(180deg,#C9A84C,#E8C97A)"></div>
-        <div class="ev-left"><span class="ev-emoji">💍</span><span class="ev-day">10<br/>May</span></div>
-        <div class="ev-right"><h3>Wedding Ceremony</h3><p class="ev-time">⏰ 11:00 AM</p><p class="ev-place">📍 Sweta Lawn, Nigdi, Pune</p><span class="ev-tag">Traditional / Formal</span></div>
+
+      <!-- LEFT item -->
+      <div class="oe-item oe-left oe-featured reveal-child" style="--i:2" onclick="openEventModal('wedding')">
+        <div class="oe-content">
+          <p class="oe-time">10 May · 11:00 AM</p>
+          <h3 class="oe-name">Wedding Ceremony</h3>
+        </div>
+        <div class="oe-connector"><div class="oe-dot oe-dot-gold"></div></div>
+        <div class="oe-icon-wrap wedding-bg"><span>💍</span></div>
       </div>
-      <div class="ev-card reveal-child" style="--i:3">
-        <div class="ev-accent" style="background:linear-gradient(180deg,#E64A19,#BF360C)"></div>
-        <div class="ev-left"><span class="ev-emoji">🥂</span><span class="ev-day">10<br/>May</span></div>
-        <div class="ev-right"><h3>Wedding Reception</h3><p class="ev-time">⏰ 7:00 PM onwards</p><p class="ev-place">📍 Sweta Lawn, Nigdi, Pune</p><span class="ev-tag">Ethnic / Formal</span></div>
+
+      <!-- RIGHT item -->
+      <div class="oe-item oe-right reveal-child" style="--i:3" onclick="openEventModal('reception')">
+        <div class="oe-icon-wrap reception-bg"><span>🥂</span></div>
+        <div class="oe-connector"><div class="oe-dot"></div></div>
+        <div class="oe-content">
+          <p class="oe-time">10 May · 7:00 PM</p>
+          <h3 class="oe-name">Wedding Reception</h3>
+        </div>
       </div>
     </div>
+
+    <p class="oe-footer">Thank you for celebrating this day with us<br/><span class="oe-couple">Nikhil &amp; Prachi</span></p>
   </section>
+
+  <!-- EVENT DETAIL MODAL -->
+  <div id="event-modal" class="ev-modal hidden">
+    <div class="ev-modal-bg" onclick="closeEventModal()"></div>
+    <div class="ev-modal-card">
+      <button class="ev-modal-close" onclick="closeEventModal()">✕</button>
+      <div class="ev-modal-icon" id="em-icon"></div>
+      <h2 class="ev-modal-title" id="em-title"></h2>
+      <div class="ev-modal-info">
+        <div class="ev-modal-row"><span>📅</span><span id="em-date"></span></div>
+        <div class="ev-modal-row"><span>⏰</span><span id="em-time"></span></div>
+        <div class="ev-modal-row"><span>📍</span><span id="em-venue"></span></div>
+        <div class="ev-modal-row"><span>👗</span><span id="em-dress"></span></div>
+      </div>
+      <div class="ev-modal-map">
+        <iframe id="em-map" src="" width="100%" height="160" style="border:0;border-radius:12px;" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="ev-modal-btns">
+        <a id="em-dir-btn" href="#" target="_blank" class="btn-p">📍 Get Directions</a>
+        <a id="em-cal-btn" href="#" target="_blank" class="btn-o">📅 Add to Calendar</a>
+      </div>
+    </div>
+  </div>
 
   <!-- LOCATION -->
   <section id="s-loc" class="s loc-s reveal">
