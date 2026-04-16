@@ -244,10 +244,12 @@ document.addEventListener('DOMContentLoaded', function(){
   function openLb(i){ lbI=i; showLb(); safe(()=>{ el('lb').classList.remove('hidden'); el('lb').style.display='flex'; }); }
   function showLb(){
     const e = el('lb-img'); if(!e) return;
-    e.style.cssText = 'background:'+lbBg[lbI]+';display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.45);font-size:.82rem;';
+    e.style.cssText = 'background:'+lbBg[lbI]+';display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:.8rem;letter-spacing:1px;';
     e.textContent = lbLbl[lbI];
     const cap = el('lb-caption');
     if(cap) cap.textContent = lbLbl[lbI];
+    const ctr = el('lb-counter');
+    if(ctr) ctr.textContent = (lbI+1) + ' / ' + lbBg.length;
   }
   window.closeLb = function(){ const l=el('lb'); if(l){l.classList.add('hidden');l.style.display='none';} };
   window.lbP     = function(){ lbI=(lbI-1+lbBg.length)%lbBg.length; showLb(); };
