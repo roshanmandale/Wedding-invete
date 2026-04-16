@@ -628,3 +628,64 @@ button{font-family:'Poppins',sans-serif;cursor:pointer;border:none;outline:none}
   line-height:2;white-space:pre-line;
 }
 .sm-body strong{color:var(--gold)}
+
+/* STORY CARTOON ILLUSTRATIONS */
+.sc-cartoon{
+  width:100%;border-radius:14px;
+  padding:16px 12px 10px;margin-bottom:16px;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  min-height:110px;
+}
+.sc-cartoon-1{background:linear-gradient(135deg,rgba(30,60,30,0.25),rgba(10,2,2,0.8));border:1px solid rgba(76,175,80,0.2)}
+.sc-cartoon-2{background:linear-gradient(135deg,rgba(60,40,10,0.25),rgba(10,2,2,0.8));border:1px solid rgba(255,165,0,0.2)}
+.sc-cartoon-3{background:linear-gradient(135deg,rgba(10,30,60,0.25),rgba(10,2,2,0.8));border:1px solid rgba(30,144,255,0.2)}
+
+/* Characters */
+.sc-scene{display:flex;align-items:flex-end;justify-content:center;gap:16px;position:relative;z-index:1}
+.sc-char{display:flex;flex-direction:column;align-items:center;gap:0}
+.sc-head{font-size:1.8rem;line-height:1;animation:charBob 2s ease-in-out infinite}
+.sc-char-girl .sc-head{animation-delay:0.3s}
+.sc-body-char{font-size:1.4rem;line-height:1}
+.sc-pillion{margin-left:-20px;margin-bottom:4px}
+.sc-pillion .sc-head{font-size:1.4rem}
+
+/* Spark effect for story 1 */
+.sc-spark-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:4px}
+.sc-spark{font-size:1.8rem;animation:sparkPop 0.8s ease-in-out infinite alternate}
+.sc-smoke{font-size:1rem;animation:smokeDrift 1.5s ease-in-out infinite;opacity:0.7}
+
+/* Floating heart for story 3 */
+.sc-heart-float{
+  font-size:1.2rem;position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  animation:heartFloat 2s ease-in-out infinite;
+}
+
+/* Speech bubble */
+.sc-caption-bubble{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:12px;padding:6px 12px;
+  font-size:0.68rem;color:rgba(237,224,204,0.75);
+  text-align:center;font-style:italic;
+  position:relative;z-index:1;max-width:90%;
+  animation:bubblePop 0.5s ease-out;
+}
+.sc-caption-bubble::before{
+  content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-bottom-color:rgba(201,168,76,0.2);
+  border-top:none;
+}
+
+/* Scene background icons */
+.sc-scene-bg,.sc-lab-table{
+  font-size:1rem;letter-spacing:6px;opacity:0.4;
+  position:relative;z-index:1;
+}
+
+/* Animations */
+@keyframes charBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes sparkPop{0%{transform:scale(0.8) rotate(-10deg);opacity:0.7}100%{transform:scale(1.2) rotate(10deg);opacity:1}}
+@keyframes smokeDrift{0%{transform:translateY(0) translateX(0);opacity:0.7}50%{transform:translateY(-6px) translateX(3px);opacity:0.4}100%{transform:translateY(-10px) translateX(-2px);opacity:0}}
+@keyframes heartFloat{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}50%{transform:translateX(-50%) translateY(-6px) scale(1.2)}}
+@keyframes bubblePop{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
