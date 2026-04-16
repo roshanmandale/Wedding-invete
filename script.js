@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(!env){ showMain(); return; }
     safe(()=>playMusic());
     if(photo){ photo.style.transition='opacity 0.5s'; photo.style.opacity='0'; }
+
     setTimeout(()=>{
       if(photo) photo.style.display='none';
       env.style.display='flex'; env.style.opacity='0'; env.style.transition='opacity 0.5s';
@@ -78,7 +79,21 @@ document.addEventListener('DOMContentLoaded', function(){
       setTimeout(()=>{ safe(()=>el('eflap').classList.add('open')); safe(()=>el('eseal').classList.add('gone')); },700);
       setTimeout(()=>safe(()=>el('ecrev').classList.add('up')),1900);
       setTimeout(()=>safe(()=>el('eburst').classList.add('on')),2700);
-      setTimeout(()=>{ env.style.opacity='0'; setTimeout(()=>{ env.style.display='none'; showMain(); },600); },3700);
+
+      // Guaranteed transition to main — multiple fallbacks
+      function goToMain(){
+        if(env.style.display==='none') return; // already done
+        env.style.opacity='0';
+        setTimeout(()=>{ env.style.display='none'; showMain(); },600);
+      }
+      setTimeout(goToMain, 3700);
+      setTimeout(goToMain, 5500); // hard fallback
+
+      // Tap anywhere on envelope to skip
+      env.addEventListener('click', function onEnvClick(){
+        env.removeEventListener('click', onEnvClick);
+        goToMain();
+      });
     },500);
   }
 
