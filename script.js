@@ -102,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
     const btn = el('add-home-btn');
     if(!btn) return;
+    btn.classList.add('hidden');
+    btn.style.display = 'none';
 
     if(isStandaloneMode()){
       btn.classList.add('hidden');
@@ -128,24 +130,11 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     btn.addEventListener('click', async () => {
-      if(deferredInstallPrompt){
-        deferredInstallPrompt.prompt();
-        try{ await deferredInstallPrompt.userChoice; }catch(_err){}
-        deferredInstallPrompt = null;
-        return;
-      }
-
-      const ua = navigator.userAgent || '';
-      const isIOS = /iPad|iPhone|iPod/.test(ua);
-      if(isIOS){
-        alert('On iPhone/iPad: tap Share and then "Add to Home Screen".');
-      } else {
-        alert('Use your browser menu and choose "Install app" or "Add to Home screen".');
-      }
+      if(!deferredInstallPrompt) return;
+      deferredInstallPrompt.prompt();
+      try{ await deferredInstallPrompt.userChoice; }catch(_err){}
+      deferredInstallPrompt = null;
     });
-
-    // Keep button visible for manual fallback when prompt is unavailable.
-    showInstallButton();
   }
 
   // ── COUNTDOWN ──
