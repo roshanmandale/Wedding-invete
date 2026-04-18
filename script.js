@@ -119,17 +119,17 @@ document.addEventListener('DOMContentLoaded', function(){
   window.closeNav = function(){ safe(()=>{ el('nav-panel').classList.remove('open'); document.body.style.overflow=''; }); };
 
   // ── GALLERY ──
-  function initGallery(){
-    document.querySelectorAll('.gt').forEach(btn=>{
-      btn.addEventListener('click',function(){
-        document.querySelectorAll('.gt').forEach(b=>b.classList.remove('active'));
-        this.classList.add('active');
-        const cat=this.dataset.c;
-        document.querySelectorAll('.gi').forEach(i=>{ i.style.display=(cat==='all'||i.dataset.c===cat)?'':'none'; });
+    function initGallery(){
+      document.querySelectorAll('.gt').forEach(btn=>{
+        btn.addEventListener('click',function(){
+          document.querySelectorAll('.gt').forEach(b=>b.classList.remove('active'));
+          this.classList.add('active');
+          const cat=this.dataset.c;
+          document.querySelectorAll('.gi').forEach(i=>{ i.style.display=(cat==='all'||i.dataset.c===cat)?'':'none'; });
+        });
       });
-    });
-    document.querySelectorAll('.gi').forEach((e,i)=>e.addEventListener('click',()=>openLb(i)));
-  }
+      document.querySelectorAll('.gi').forEach((e,i)=>e.addEventListener('click',()=>openLb(i)));
+    }
 
   const lbBg=['#3d0808','#1a0303','#3d2d0d','#0d1a3d','#0d3d0d','#2d0d3d'];
   const lbLbl=['Pre-Wedding 1','Pre-Wedding 2','Engagement','Pre-Wedding 3','Celebration','Joy'];
