@@ -1069,7 +1069,7 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
       btn.style.display = 'none';
       return;
     }
-    btn.style.display = 'inline-flex';
+    btn.style.display = 'block';
     btn.textContent = wishesExpanded ? 'Show Less Wishes' : 'See More Wishes';
   }
 
