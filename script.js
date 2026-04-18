@@ -1072,13 +1072,30 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
 
   // ── MUSIC ──
   let mOn=false;
+  let autoPausedByVisibility = false;
   function playMusic(){
     const a=el('aud'); if(!a)return;
     a.volume=.35;
     a.play().then(()=>{ mOn=true; updateMusicUI(); }).catch(()=>{});
   }
+  function pauseMusicForBackground(){
+    const a=el('aud'); if(!a)return;
+    if(mOn && !a.paused){
+      autoPausedByVisibility = true;
+      a.pause();
+      mOn=false;
+      updateMusicUI();
+    }
+  }
+  function resumeMusicAfterBackground(){
+    const a=el('aud'); if(!a)return;
+    if(!autoPausedByVisibility) return;
+    autoPausedByVisibility = false;
+    a.play().then(()=>{ mOn=true; updateMusicUI(); }).catch(()=>{});
+  }
   window.toggleMusic = function(){
     const a=el('aud'); if(!a)return;
+    autoPausedByVisibility = false;
     if(mOn){ a.pause(); mOn=false; } else { a.play().catch(()=>{}); mOn=true; }
     updateMusicUI();
   };
@@ -1092,6 +1109,14 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
     if(fabLabel) fabLabel.textContent=mOn?'Stop Music':'Play Music';
     if(fabBtn)   fabBtn.style.borderColor=mOn?'rgba(201,168,76,0.5)':'rgba(201,168,76,0.25)';
   }
+
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden) pauseMusicForBackground();
+    else resumeMusicAfterBackground();
+  });
+  window.addEventListener('pagehide', pauseMusicForBackground);
+  window.addEventListener('blur', ()=>{ if(document.hidden) pauseMusicForBackground(); });
+  window.addEventListener('focus', ()=>{ if(!document.hidden) resumeMusicAfterBackground(); });
 
   // ── SHARE ──
   window.doShare = function(){
