@@ -1363,21 +1363,6 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
       document.body.classList.toggle('capture-shield-on', Boolean(active));
     };
 
-    const addWatermark = () => {
-      if(el('capture-watermark')) return;
-      const wm = document.createElement('div');
-      wm.id = 'capture-watermark';
-      wm.className = 'capture-watermark';
-      document.body.appendChild(wm);
-
-      const stamp = () => {
-        const ts = new Date().toLocaleString();
-        wm.textContent = 'PRIVATE INVITATION • NIKHIL & PRACHI • ' + ts;
-      };
-      stamp();
-      setInterval(stamp, 15000);
-    };
-
     const clearClipboard = async () => {
       try{
         if(navigator.clipboard && navigator.clipboard.writeText){
@@ -1388,7 +1373,34 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
       }
     };
 
-    addWatermark();
+    const lockScreenshotKey = async () => {
+      try{
+        if(navigator.keyboard && navigator.keyboard.lock){
+          await navigator.keyboard.lock(['PrintScreen']);
+        }
+      }catch(_err){
+        // Keyboard lock may require browser support, secure context, and user gesture.
+      }
+    };
+
+    const unlockScreenshotKey = () => {
+      try{
+        if(navigator.keyboard && navigator.keyboard.unlock){
+          navigator.keyboard.unlock();
+        }
+      }catch(_err){
+        // Ignore unlock errors.
+      }
+    };
+
+    const tryLockOnInteraction = () => {
+      lockScreenshotKey();
+      window.removeEventListener('pointerdown', tryLockOnInteraction, true);
+      window.removeEventListener('keydown', tryLockOnInteraction, true);
+    };
+
+    window.addEventListener('pointerdown', tryLockOnInteraction, true);
+    window.addEventListener('keydown', tryLockOnInteraction, true);
 
     document.addEventListener('contextmenu', blockEvent, { capture:true });
     document.addEventListener('dragstart', blockEvent, { capture:true });
@@ -1423,12 +1435,17 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
 
     document.addEventListener('visibilitychange', ()=>{
       setShield(document.hidden);
+      if(!document.hidden) lockScreenshotKey();
     });
 
     window.addEventListener('blur', ()=>setShield(true));
-    window.addEventListener('focus', ()=>setShield(false));
+    window.addEventListener('focus', ()=>{
+      setShield(false);
+      lockScreenshotKey();
+    });
     window.addEventListener('pagehide', ()=>setShield(true));
     window.addEventListener('pageshow', ()=>setShield(false));
+    window.addEventListener('beforeunload', unlockScreenshotKey);
   })();
 
   initLoader();

@@ -36,24 +36,6 @@ body.capture-guard-enabled .ft-btn,
 body.capture-guard-enabled .quiz-opt{
   pointer-events:auto;
 }
-.capture-watermark{
-  position:fixed;
-  inset:0;
-  z-index:9998;
-  pointer-events:none;
-  opacity:0.11;
-  mix-blend-mode:screen;
-  display:grid;
-  place-items:center;
-  transform:rotate(-24deg);
-  font-family:'Cinzel',serif;
-  font-size:clamp(14px,2.5vw,22px);
-  letter-spacing:4px;
-  color:rgba(201,168,76,0.9);
-  text-align:center;
-  padding:20px;
-  text-shadow:0 0 8px rgba(0,0,0,0.45);
-}
 body.capture-shield-on::after{
   content:'CAPTURE PROTECTION ENABLED';
   position:fixed;
