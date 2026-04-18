@@ -130,7 +130,7 @@ function getLocalReply(msg) {
     return '✉ Please scroll to the RSVP section and fill in the form to confirm your attendance!';
   if (q.match(/date|when|may|2026/))
     return '💍 The wedding is on 10 May 2026! Mehndi: 8 May · Sangeet: 9 May · Reception: 10 May evening.';
-  if (q.match(/nikhil|prachi|couple|story|proposal/))
+  if (q.match(/Nikhil|Prachi|couple|story|proposal/i))
     return '❤️ Nikhil & Prachi began their journey in 2021, Nikhil proposed in 2023, and they\'re getting married on 10 May 2026!';
   if (q.match(/hi|hello|hey|namaste/))
     return 'Namaste! 🙏 Welcome to Nikhil & Prachi\'s wedding! I\'m here to help. Ask me about events, venue, dress code or RSVP!';

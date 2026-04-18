@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function(){
   // ── MAIN INIT ──
   function initMain(){
     safe(()=>mkCanvas('hc',60,['#C9A84C','#C41E3A','#8B1A2A']));
-    initCountdown(); initReveal(); initNav(); initGallery(); initGalleryAccessGate(); initWishes();
+    initCountdown(); initReveal(); initNav(); initGallery(); initGalleryAccessGate(); initStoryCardsPreview(); initWishes();
   }
 
   // ── COUNTDOWN ──
@@ -911,6 +911,36 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
 
   let storyLang = 'mr';
   let activeStoryIndex = null;
+  let storiesExpanded = false;
+
+  function updateStoryPreviewState(){
+    const cards = Array.from(document.querySelectorAll('.story-cards .story-card'));
+    const btn = el('story-see-more-btn');
+
+    cards.forEach((card, idx)=>{
+      const show = storiesExpanded || idx < 2;
+      card.style.display = show ? '' : 'none';
+    });
+
+    if(btn){
+      if(cards.length <= 2){
+        btn.style.display = 'none';
+      } else {
+        btn.style.display = 'inline-flex';
+        btn.textContent = storiesExpanded ? 'Show Less Stories' : 'See More Stories';
+      }
+    }
+  }
+
+  function initStoryCardsPreview(){
+    storiesExpanded = false;
+    updateStoryPreviewState();
+  }
+
+  window.toggleStoryCards = function(){
+    storiesExpanded = !storiesExpanded;
+    updateStoryPreviewState();
+  };
 
   function renderStoryLanguageState(){
     const isMr = storyLang === 'mr';
@@ -1018,32 +1048,68 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
     safe(()=>el('wl').prepend(c));
   }
 
-  function keepOnlyRecentWishes(limit){
+  const WISH_PREVIEW_LIMIT = 3;
+  let wishesExpanded = false;
+  let wishesStore = [];
+
+  function collectWishesFromDom(){
+    const wl = el('wl');
+    if(!wl) return [];
+    return Array.from(wl.querySelectorAll('.wc')).map((card)=>{
+      const msg = (card.querySelector('p')?.textContent || '').trim();
+      const by = (card.querySelector('.wa')?.textContent || '').replace(/^—\s*/, '').trim();
+      return { name: by, message: msg };
+    }).filter((w)=>w.name && w.message);
+  }
+
+  function updateWishesPreviewButton(){
+    const btn = el('wishes-see-more-btn');
+    if(!btn) return;
+    if(wishesStore.length <= WISH_PREVIEW_LIMIT){
+      btn.style.display = 'none';
+      return;
+    }
+    btn.style.display = 'inline-flex';
+    btn.textContent = wishesExpanded ? 'Show Less Wishes' : 'See More Wishes';
+  }
+
+  function renderWishes(){
     const wl = el('wl');
     if(!wl) return;
-    const cards = wl.querySelectorAll('.wc');
-    cards.forEach((card, idx) => {
-      if(idx >= limit) card.remove();
+    wl.innerHTML = '';
+
+    const visible = wishesExpanded ? wishesStore : wishesStore.slice(0, WISH_PREVIEW_LIMIT);
+    visible.forEach((w)=>{
+      const c=document.createElement('div');
+      c.className='wc';
+      c.innerHTML='<span class="wq">"</span><p>'+escapeHtml(w.message)+'</p><span class="wa">— '+escapeHtml(w.name)+'</span>';
+      wl.appendChild(c);
     });
+
+    updateWishesPreviewButton();
   }
 
   async function initWishes(){
+    wishesExpanded = false;
     try{
       const res = await fetch('/api/wishes');
-      if(!res.ok) return;
+      if(!res.ok) throw new Error('wishes fetch failed');
       const data = await res.json();
-      if(!Array.isArray(data.wishes)) return;
+      if(!Array.isArray(data.wishes)) throw new Error('invalid wishes payload');
 
-      const wl = el('wl');
-      if(wl) wl.querySelectorAll('.wc').forEach(item=>item.remove());
-      data.wishes.slice(0,3).reverse().forEach(w=>{
-        if(w && w.name && w.message) appendWishCard(w.name, w.message);
-      });
-      keepOnlyRecentWishes(3);
+      wishesStore = data.wishes
+        .filter((w)=>w && w.name && w.message)
+        .map((w)=>({ name: String(w.name).trim(), message: String(w.message).trim() }));
     }catch(_err){
-      // No-op: static fallback view remains
+      wishesStore = collectWishesFromDom();
     }
+    renderWishes();
   }
+
+  window.toggleWishesExpanded = function(){
+    wishesExpanded = !wishesExpanded;
+    renderWishes();
+  };
 
   window.toggleWF = function(){ safe(()=>el('wf').classList.toggle('hidden')); };
   window.addWish  = async function(){
@@ -1064,8 +1130,8 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
       return;
     }
 
-    appendWishCard(n, m);
-    keepOnlyRecentWishes(3);
+    wishesStore.unshift({ name: n, message: m });
+    renderWishes();
     el('wn').value=''; el('wm').value='';
     safe(()=>el('wf').classList.add('hidden'));
   };
