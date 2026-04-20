@@ -7,38 +7,72 @@ function safe(fn){ try{ return fn(); }catch(e){ console.warn(e); } }
 document.addEventListener('DOMContentLoaded', function(){
   let deferredInstallPrompt = null;
 
-  function updateInstallButtonState(isReady){
+  function updateInstallButtonState(state){
     const btn = el('add-home-btn');
     const label = el('add-home-label');
     if(!btn || !label) return;
 
-    btn.classList.toggle('is-ready', !!isReady);
-    label.textContent = isReady ? 'Add to Home' : 'Install Guide';
+    btn.classList.remove('is-ready');
+    btn.disabled = false;
+
+    if(state === 'ready'){
+      btn.classList.add('is-ready');
+      label.textContent = 'Add to Home';
+      return;
+    }
+
+    if(state === 'installed'){
+      btn.disabled = true;
+      label.textContent = 'Added to Home';
+      return;
+    }
+
+    if(state === 'unsupported'){
+      label.textContent = 'Use Browser Menu';
+      return;
+    }
+
+    label.textContent = 'Preparing Install';
+  }
+
+  function isStandaloneMode(){
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
 
   window.addToHome = async function(){
+    if(isStandaloneMode()){
+      updateInstallButtonState('installed');
+      return;
+    }
+
     if(deferredInstallPrompt){
       deferredInstallPrompt.prompt();
       try{ await deferredInstallPrompt.userChoice; }catch(_err){}
       deferredInstallPrompt = null;
-      updateInstallButtonState(false);
+      updateInstallButtonState('loading');
       return;
     }
 
-    alert('Install prompt not ready. In Chrome: tap menu (three dots) and choose "Add to Home screen".');
+    updateInstallButtonState('unsupported');
   };
 
   window.addEventListener('beforeinstallprompt', (event)=>{
     event.preventDefault();
     deferredInstallPrompt = event;
-    updateInstallButtonState(true);
+    updateInstallButtonState('ready');
   });
 
   window.addEventListener('appinstalled', ()=>{
     deferredInstallPrompt = null;
-    updateInstallButtonState(false);
-    alert('Invitation added to your home screen.');
+    updateInstallButtonState('installed');
   });
+
+  if(isStandaloneMode()) updateInstallButtonState('installed');
+  else updateInstallButtonState('loading');
+
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  }
 
   // ── CANVAS PARTICLES ──
   function mkCanvas(id,n,cols){
@@ -1336,10 +1370,6 @@ beach, sunset, travel… सगळं एकदम perfect 🌅✨
   }
 
   initLoader();
-
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/sw.js').catch(()=>{});
-  }
 
 });
 
