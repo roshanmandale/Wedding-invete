@@ -7,6 +7,7 @@ function safe(fn){ try{ return fn(); }catch(e){ console.warn(e); } }
 document.addEventListener('DOMContentLoaded', function(){
   let deferredInstallPrompt = null;
   let installRequested = false;
+  let installHelpTimer = null;
 
   function updateInstallButtonState(state){
     const btn = el('add-home-btn');
@@ -40,6 +41,74 @@ document.addEventListener('DOMContentLoaded', function(){
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
 
+  function getInstallHelpContent(){
+    const ua = (navigator.userAgent || '').toLowerCase();
+    const isAndroid = /android/.test(ua);
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isSafari = /safari/.test(ua) && !/chrome|crios|edg|opr/.test(ua);
+
+    if(isIOS && isSafari){
+      return {
+        title: 'Add On iPhone / iPad',
+        steps: [
+          'Tap the Share button in Safari.',
+          'Scroll and tap Add to Home Screen.',
+          'Tap Add to confirm.'
+        ]
+      };
+    }
+
+    if(isAndroid){
+      return {
+        title: 'Add On Android',
+        steps: [
+          'Tap browser menu (three dots).',
+          'Select Install app or Add to Home screen.',
+          'Tap Install / Add to confirm.'
+        ]
+      };
+    }
+
+    return {
+      title: 'Install This App',
+      steps: [
+        'Use your browser menu to install this app.',
+        'Choose Install app or Add to Home screen.',
+        'Confirm install to create a home shortcut.'
+      ]
+    };
+  }
+
+  function openInstallHelp(){
+    const modal = el('install-help');
+    const title = el('install-help-title');
+    const steps = el('install-help-steps');
+    if(!modal || !title || !steps) return;
+
+    const content = getInstallHelpContent();
+    title.textContent = content.title;
+    steps.innerHTML = '';
+    content.steps.forEach((line)=>{
+      const li = document.createElement('li');
+      li.textContent = line;
+      steps.appendChild(li);
+    });
+
+    modal.classList.remove('hidden');
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  window.closeInstallHelp = function(){
+    const modal = el('install-help');
+    if(!modal) return;
+    modal.classList.add('hidden');
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
   window.addToHome = async function(){
     if(isStandaloneMode()){
       updateInstallButtonState('installed');
@@ -48,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     if(deferredInstallPrompt){
       installRequested = false;
+      if(installHelpTimer){ clearTimeout(installHelpTimer); installHelpTimer = null; }
       deferredInstallPrompt.prompt();
       try{ await deferredInstallPrompt.userChoice; }catch(_err){}
       deferredInstallPrompt = null;
@@ -56,12 +126,20 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     installRequested = true;
-    updateInstallButtonState('unsupported');
+    updateInstallButtonState('loading');
+    if(installHelpTimer){ clearTimeout(installHelpTimer); }
+    installHelpTimer = setTimeout(()=>{
+      if(!deferredInstallPrompt){
+        updateInstallButtonState('unsupported');
+        openInstallHelp();
+      }
+    }, 1400);
   };
 
   window.addEventListener('beforeinstallprompt', async (event)=>{
     event.preventDefault();
     deferredInstallPrompt = event;
+    if(installHelpTimer){ clearTimeout(installHelpTimer); installHelpTimer = null; }
     updateInstallButtonState('ready');
 
     if(installRequested && deferredInstallPrompt){
@@ -75,6 +153,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
   window.addEventListener('appinstalled', ()=>{
     deferredInstallPrompt = null;
+    if(installHelpTimer){ clearTimeout(installHelpTimer); installHelpTimer = null; }
+    window.closeInstallHelp();
     updateInstallButtonState('installed');
   });
 
