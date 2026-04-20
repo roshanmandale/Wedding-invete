@@ -19,6 +19,24 @@ const IST_OFFSET_MINUTES = 330;
 let twilioAuthValid = null;
 let twilioAuthError = '';
 
+function getStaticGalleryAllowlistLast10() {
+  const raw = String(process.env.GALLERY_ALLOWED_NUMBERS || '').trim();
+  if (!raw) return [];
+
+  return raw
+    .split(',')
+    .map((value) => extractLast10Digits(value))
+    .filter(Boolean);
+}
+
+function hasStaticGalleryAccess(phoneInput) {
+  const target = extractLast10Digits(phoneInput);
+  if (!target) return false;
+  const allowlist = getStaticGalleryAllowlistLast10();
+  if (!allowlist.length) return false;
+  return allowlist.includes(target);
+}
+
 function galleryItemsResponse(authorized) {
   return { authorized: !!authorized, items: authorized ? GALLERY_ITEMS : [] };
 }
@@ -123,6 +141,8 @@ function extractLast10Digits(value) {
 }
 
 async function hasGalleryAccess(db, phoneInput) {
+  if (hasStaticGalleryAccess(phoneInput)) return true;
+
   const inputPhone = normalizePhone(phoneInput);
   const inputLast10 = extractLast10Digits(inputPhone);
   if (!inputLast10) return false;
