@@ -292,6 +292,48 @@ document.addEventListener('DOMContentLoaded', function(){
   let lbSlideIndex = 0;
   let lbSlides = [];
 
+  function buildImageCandidates(url){
+    const raw = String(url || '').trim();
+    if(!raw) return [];
+
+    const out = [];
+    const push = (v)=>{ if(v && !out.includes(v)) out.push(v); };
+
+    push(raw);
+    if(raw.startsWith('/public/')) push(raw.replace('/public/', '/'));
+    if(raw.startsWith('/gallery/')) push('/public' + raw);
+
+    return out;
+  }
+
+  function setBackgroundWithFallback(targetEl, imageUrl, fallbackBg){
+    if(!targetEl) return;
+    const bg = fallbackBg || '#3d0808';
+    const candidates = buildImageCandidates(imageUrl);
+
+    targetEl.style.backgroundColor = bg;
+    targetEl.style.backgroundImage = 'none';
+    targetEl.style.backgroundSize = 'cover';
+    targetEl.style.backgroundPosition = 'center';
+    targetEl.style.backgroundRepeat = 'no-repeat';
+
+    if(!candidates.length) return;
+
+    let idx = 0;
+    const tryNext = ()=>{
+      if(idx >= candidates.length) return;
+      const src = candidates[idx++];
+      const img = new Image();
+      img.onload = ()=>{
+        targetEl.style.backgroundImage = 'url("'+src+'")';
+      };
+      img.onerror = tryNext;
+      img.src = src;
+    };
+
+    tryNext();
+  }
+
   function applyGalleryFilter(category){
     const cat = category || 'all';
     document.querySelectorAll('.gt').forEach((btn)=>{
@@ -324,11 +366,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
       const firstSlide = item && Array.isArray(item.slides) ? item.slides[0] : null;
       const coverImage = firstSlide && firstSlide.imageUrl ? firstSlide.imageUrl : (item && item.tileImage ? item.tileImage : '');
-      if(coverImage){
-        gp.style.backgroundImage = 'url("' + coverImage + '")';
-        gp.style.backgroundSize = 'cover';
-        gp.style.backgroundPosition = 'center';
-      }
+      setBackgroundWithFallback(gp, coverImage, (item && item.bg) || '#3d0808');
 
       const overlay = document.createElement('div');
       overlay.className = 'gp-overlay';
@@ -379,11 +417,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(lbImg){
       const fallbackBg = (slide && slide.bg) || (tile && tile.bg) || '#3d0808';
       const imageUrl = slide && slide.imageUrl ? slide.imageUrl : '';
-      lbImg.style.backgroundColor = fallbackBg;
-      lbImg.style.backgroundImage = imageUrl ? 'url("'+imageUrl+'")' : 'none';
-      lbImg.style.backgroundSize = 'cover';
-      lbImg.style.backgroundPosition = 'center';
-      lbImg.style.backgroundRepeat = 'no-repeat';
+      setBackgroundWithFallback(lbImg, imageUrl, fallbackBg);
       lbImg.textContent = imageUrl ? '' : ((slide && slide.label) || (tile && tile.lightboxLabel) || 'Memory');
     }
 
